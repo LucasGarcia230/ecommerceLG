@@ -13,20 +13,19 @@ const products = [
 
 // Carrito de compras
 let cart = [];
+let total = 0; // Variable para acumular el total
+let descuentoAplicado = false; // Para evitar aplicar múltiples descuentos
 
 // Función para mostrar los productos en la página
 function displayProducts() {
-    
     const productList = document.querySelector('.lista-prod');
-    
     productList.innerHTML = ''; // Limpiar lista de productos
 
     // Iterar sobre los productos y crear el HTML
     products.forEach(product => {
-        
         const productDiv = document.createElement('div');
         productDiv.classList.add('product');
-        
+
         productDiv.innerHTML = `
             <h3>${product.name}</h3>
             <p>Precio: $${product.price}</p>
@@ -38,15 +37,13 @@ function displayProducts() {
 }
 
 // Función para agregar productos al carrito
-
 function addToCart(productId) {
-    
     // Buscar el producto por su id
     const product = products.find(p => p.id === productId);
-    
+
     // Condicional: verificar si el producto ya está en el carrito
     const cartItem = cart.find(item => item.id === productId);
-    
+
     if (cartItem) {
         // Si ya está en el carrito, aumentamos la cantidad
         cartItem.quantity += 1;
@@ -55,6 +52,7 @@ function addToCart(productId) {
         cart.push({ ...product, quantity: 1 });
     }
 
+    console.log(`Producto agregado al carrito: ${product.name}`);
     updateCart(); // Llamar a la función para actualizar el carrito
 }
 
@@ -64,7 +62,7 @@ function updateCart() {
     const cartTotal = document.getElementById('carrito-total');
     cartItems.innerHTML = ''; // Limpiar lista del carrito
 
-    let total = 0; // Variable para acumular el total
+    total = 0; // Reiniciar el total
     cart.forEach(item => {
         const li = document.createElement('li');
         li.textContent = `${item.name} - $${item.price} x ${item.quantity}`;
@@ -80,15 +78,55 @@ function updateCart() {
 
 // Función para vaciar el carrito
 function clearCart() {
-    cart = []; // Vaciar array del carrito
+    if (confirm("¿Estás seguro de que deseas vaciar el carrito?")) {
+        cart = []; // Vaciar array del carrito
+        descuentoAplicado = false; // Reiniciar el estado del descuento
+        console.log("Carrito vaciado");
+        updateCart(); // Actualizar visualmente el carrito
+    } else {
+        console.log("Acción de vaciar carrito cancelada");
+    }
+}
+
+// Función para aplicar un descuento
+function aplicarDescuento() {
+    if (descuentoAplicado) {
+        alert("Ya has aplicado un descuento.");
+        return;
+    }
+
+    let codigo = prompt("Ingresa tu código de descuento:");
+    if (codigo === "DESCUENTO10") {
+        total *= 0.9; // Aplicar un 10% de descuento
+        descuentoAplicado = true;
+        updateCartTotal();
+        alert("¡Descuento aplicado correctamente!");
+        console.log("Código de descuento aplicado: DESCUENTO10");
+    } else {
+        alert("Código de descuento inválido.");
+        console.log("Intento de código de descuento inválido");
+    }
+}
+
+// Función para actualizar solo el total en el carrito
+function updateCartTotal() {
+    const cartTotal = document.getElementById('carrito-total');
+    cartTotal.textContent = `Total: $${total.toFixed(2)}`;
+}
+
+// Función para finalizar la compra
+function finalizarCompra() {
+    if (cart.length === 0) {
+        alert("El carrito está vacío.");
+        console.log("Intento de compra con carrito vacío");
+        return;
+    }
+    alert("¡Gracias por tu compra! Te enviaremos la confirmación a tu correo.");
+    console.log("Compra finalizada. Total pagado: $" + total.toFixed(2));
+    cart = []; // Vaciar el carrito después de la compra
+    descuentoAplicado = false; // Reiniciar el estado del descuento
     updateCart(); // Actualizar visualmente el carrito
 }
 
 // Llamar a la función para mostrar los productos al cargar la página
 displayProducts();
-
-//Declaración de variables con let y const
-//funciones nativas prompt, alert, confirm
-//let platoElegido = prompt("¿Que quieres comer hoy?");
-
-//alert("El plato elegido fue " + platoElegido);

@@ -3,46 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ecommerce - Tienda electrodomesticos</title>
+    <title>Ecommerce - Tienda electrodomésticos</title>
 
-    <!--Link con CSS-->
-    
+    <!-- Enlace con CSS -->
     <link rel="stylesheet" href="./css/style.css">
 
-    <!--Link con JS-->
-    <!--Atributo async para ejecutar el archivo de manera asincronica sin bloquear el HTML-->
-    <!--Atributo defer ejectura el js una vez que se haya cargado el resto de pagina-->
-
+    <!-- Enlace con JS -->
     <script async defer src="./js/script.js"></script>
 </head>
 <body>
-    
     <header>
-
         <h1>Mi Ecommerce</h1>
-
     </header>
 
     <main>
-        
         <div class="lista-prod">
             <!-- Lista de productos generada dinámicamente -->
         </div>
 
         <div class="carrito">
-
             <h2>Carrito de Compras</h2>
-
             <ul id="carrito-items">
-                <!-- Elementos del carrito generdos dinamicamente-->
+                <!-- Elementos del carrito generados dinámicamente -->
             </ul>
-            
             <p id="carrito-total">Total: $0</p>
 
+            <button onclick="aplicarDescuento()">Aplicar Descuento</button>
             <button onclick="clearCart()">Vaciar Carrito</button>
-        
+            <button onclick="finalizarCompra()">Finalizar Compra</button>
         </div>
     </main>
-    
 </body>
 </html>
